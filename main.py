@@ -81,9 +81,9 @@ while run:
     pygame.draw.rect(screen, colour, pygame.Rect(p1.pos[0], p1.pos[1], p1.WIDTH, p1.HEIGHT))
     for obs in obsList:
         obs.move()
-        pygame.draw.rect(screen, (200, 0, 0), pygame.Rect(obs.pos[0], obs.pos[1], obs.WIDTH, obs.HEIGHT))   
+        pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(obs.pos[0], obs.pos[1], obs.WIDTH, obs.HEIGHT))   
         if obs.collide(p1):
-            pygame.quit()
+            pygame.quit() #to-do: game over screen
     
     pygame.display.update()
     FramePerSec.tick(FPS)
