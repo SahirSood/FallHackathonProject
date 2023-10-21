@@ -4,8 +4,9 @@ import math
 from pygame.locals import *
 import button
 import player
+import obstacles
 
-# setting up frames and clock varaibles
+# setting up frames and clock variables
 clock = pygame.time.Clock()
 FPS = 60
 
@@ -16,6 +17,7 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = int(SCREEN_WIDTH * 0.5)
 vec = pygame.math.Vector2
 frameCount = 0
+obstacleCooldown = 0
 
 # creating screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -37,7 +39,8 @@ colour = (0, 128, 0)
 
 FramePerSec = pygame.time.Clock()
 
-# coordinates for player
+
+# Coordinates for player
 x = 100
 y = 50
 p1 = player.Player()
@@ -50,14 +53,26 @@ quit_image = pygame.image.load('quit.png').convert_alpha()
 resume_button = button.Button(304, 65, resume_image, 1)
 quit_button = button.Button(336, 185, quit_image, 1)
 
+# TEMPORARY: create obstacle
+obsList = []
+obsList.append(obstacles.Obstacles())
+
+# Drawing a rectangle
+pygame.draw.rect(screen, colour, pygame.Rect(30, 30, 30, 30))
+
 # loading background
 bg = pygame.image.load(os.path.join('Background Images', 'city 4', '9.png'))
 bg = pygame.transform.scale(bg, (SCREEN_HEIGHT,SCREEN_WIDTH))
 bg_width = bg.get_width()
 
-# define game variables
+#define game variables
 scroll = 0
 titles =  math.ceil(SCREEN_WIDTH / bg_width) + 1
+
+#Font Settings
+myfont = pygame.font.SysFont("Comic Sans", 24)  # Increase font size for better visibility
+score_font = pygame.font.SysFont("Comic Sans", 24)
+randNumLabel = myfont.render("Score:", 1, (0, 0, 0))
 
 # initializing game loop
 run = True
@@ -68,10 +83,10 @@ while run:
     for i in range(0,titles):
         screen.blit(bg,(i*bg_width + scroll,0))
 
-    # scroll background
+    #scroll background
     scroll -=2
 
-    # reset scroll
+    #reset Scroll
     if abs(scroll) > bg_width: 
         scroll = 0
 
@@ -80,30 +95,53 @@ while run:
         if resume_button.draw(screen):
             game_paused = False
         if quit_button.draw(screen):
-            run = False    
-        
-    # event handler
+            run = False   
+
+    #Event Handler
     for event in pygame.event.get():
         # pausing the game
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_EQUALS:
                 game_paused = True
-
+      
         if event.type == pygame.QUIT: 
-            print("Game closed.")
             run = False
-    
-    # player movement
+        if event.type == pygame.KEYDOWN:    
+            if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
+                p1.jump()
     p1.move()
-    pygame.draw.rect(screen, colour, pygame.Rect(p1.pos[0], p1.pos[1], p1.WIDTH, p1.HEIGHT))
+
+    #Updating score on screen
+    score_text = score_font.render(f"Score: {p1.SCORE}", True, (255, 255, 255))  # You can change the color
+    screen.blit(score_text, (10, 10))  # Adjust the position as needed
+
+    # Drawing player
+    p1.draw(screen)
+    # Update Display
+    for obs in obsList:
+        obs.move()
+        pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(obs.pos[0], obs.pos[1], obs.WIDTH, obs.HEIGHT))   
+        if obs.collide(p1):
+            pygame.quit() #to-do: game over screen
     
+    # After each tick increment score
     pygame.display.update()
     FramePerSec.tick(FPS)
     frameCount += 1
-    if frameCount == 5:
+    if frameCount >= 60:
         p1.incrementScore()
         frameCount = 0
 
-    pygame.display.update()
+    obstacleCooldown += 1
+    if obstacleCooldown >= 90:
+        obstacleCooldown = 0
+        newObs = obstacles.Obstacles()
+        obsList.append(newObs)
+    if len(obsList) > 1:
+        if obsList[0].pos.x < 0:
+            del obsList[0]
+    
+    screen.fill((0, 0, 0)) #clear screen
 
 pygame.quit()
+
