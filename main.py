@@ -2,36 +2,56 @@ import pygame
 import os
 import math
 from pygame.locals import *
+import button
 import player
 import obstacles
-pygame.init()
 
-#Setting up frames and clock varaibles
+# setting up frames and clock variables
 clock = pygame.time.Clock()
 FPS = 60
 
+pygame.init()
 
-# Setting screen size
+# setting screen size
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = int(SCREEN_WIDTH * 0.5)
 vec = pygame.math.Vector2
-FPS = 60
 frameCount = 0
 obstacleCooldown = 0
 
-# Creating a screen with a grey background
+# creating screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-screen.fill((192, 192, 192))  # Color should be a tuple
+screen.fill((192, 192, 192)) 
 
-# Initializing color
+# game variables
+game_paused = False
+
+# define fonts and font colour
+font = pygame.font.SysFont("lucidaconsole", 40)
+TEXT_COL = (255, 255, 255)
+
+def draw_text(text, font, text_col, x, y):
+    img = font.render(text, True, text_col)
+    screen.blit(img, (x, y))
+
+# initializing player character
 colour = (0, 128, 0)
 
 FramePerSec = pygame.time.Clock()
+
 
 # Coordinates for player
 x = 100
 y = 50
 p1 = player.Player()
+
+# load button images 
+resume_image = pygame.image.load('resume.png').convert_alpha()
+quit_image = pygame.image.load('quit.png').convert_alpha()
+
+# create button instances
+resume_button = button.Button(304, 65, resume_image, 1)
+quit_button = button.Button(336, 185, quit_image, 1)
 
 # TEMPORARY: create obstacle
 obsList = []
@@ -40,11 +60,10 @@ obsList.append(obstacles.Obstacles())
 # Drawing a rectangle
 pygame.draw.rect(screen, colour, pygame.Rect(30, 30, 30, 30))
 
-#load Image
+# loading background
 bg = pygame.image.load(os.path.join('Background Images', 'city 4', '9.png'))
 bg = pygame.transform.scale(bg, (SCREEN_HEIGHT,SCREEN_WIDTH))
 bg_width = bg.get_width()
-
 
 #define game variables
 scroll = 0
@@ -55,7 +74,7 @@ myfont = pygame.font.SysFont("Comic Sans", 24)  # Increase font size for better 
 score_font = pygame.font.SysFont("Comic Sans", 24)
 randNumLabel = myfont.render("Score:", 1, (0, 0, 0))
 
-
+# initializing game loop
 run = True
 while run:
 
@@ -71,10 +90,20 @@ while run:
     if abs(scroll) > bg_width: 
         scroll = 0
 
-
+    # check if the game is paused 
+    if game_paused == True:
+        if resume_button.draw(screen):
+            game_paused = False
+        if quit_button.draw(screen):
+            run = False   
 
     #Event Handler
     for event in pygame.event.get():
+        # pausing the game
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_EQUALS:
+                game_paused = True
+      
         if event.type == pygame.QUIT: 
             run = False
         if event.type == pygame.KEYDOWN:    
@@ -115,6 +144,4 @@ while run:
     screen.fill((0, 0, 0)) #clear screen
 
 pygame.quit()
-
-
 

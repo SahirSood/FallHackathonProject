@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import os
 
+
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = int(SCREEN_WIDTH * 0.5)
 vec = pygame.math.Vector2
@@ -9,7 +10,6 @@ ACC = 0.5
 FRIC = -0.12
 FPS = 60
 gravity = 0.1
-
 
 class Player(pygame.sprite.Sprite):
     WIDTH = 20
@@ -52,7 +52,6 @@ class Player(pygame.sprite.Sprite):
         self.acc.x += self.vel.x * FRIC
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
-        
 
         if self.pos.x > SCREEN_WIDTH - self.WIDTH:
             self.pos.x = SCREEN_WIDTH - self.WIDTH
@@ -80,4 +79,3 @@ class Player(pygame.sprite.Sprite):
 
     def jump(self):
         self.vel.y = self.jumpHeight
-           
