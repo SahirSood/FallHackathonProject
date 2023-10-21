@@ -44,7 +44,10 @@ bg_width = bg.get_width()
 scroll = 0
 titles =  math.ceil(SCREEN_WIDTH / bg_width) + 1
 
-
+#Font Settings
+myfont = pygame.font.SysFont("Comic Sans", 24)  # Increase font size for better visibility
+score_font = pygame.font.SysFont("Comic Sans", 24)
+randNumLabel = myfont.render("Score:", 1, (0, 0, 0))
 
 
 run = True
@@ -69,15 +72,23 @@ while run:
         if event.type == pygame.QUIT: 
             run = False
     p1.move()
+
+    #Updating score on screen
+    score_text = score_font.render(f"Score: {p1.SCORE}", True, (255, 255, 255))  # You can change the color
+    screen.blit(score_text, (10, 10))  # Adjust the position as needed
+
+    # Drawing player
     pygame.draw.rect(screen, colour, pygame.Rect(p1.pos[0], p1.pos[1], p1.WIDTH, p1.HEIGHT))
     
+    # Update Display
+    
+    # After each tick increment score
     pygame.display.update()
     FramePerSec.tick(FPS)
     frameCount += 1
     if frameCount == 5:
         p1.incrementScore()
         frameCount = 0
-    screen.fill((0, 0, 0)) #clear screen
 
 pygame.quit()
 
