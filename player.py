@@ -54,4 +54,4 @@ class Player(pygame.sprite.Sprite):
 
     def jump(self):
         self.vel.y = self.jumpHeight
-            
+           
