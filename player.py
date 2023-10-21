@@ -18,10 +18,6 @@ class Player(pygame.sprite.Sprite):
     jumpHeight = -12
     def __init__(self):
         super().__init__()
-        # Variables
-        self.pos = vec((10, 385))
-        self.vel = vec(0, 0)
-        self.acc = vec(0, 0)
 
         # Run Sprites
         self.RunSprites = []
@@ -35,11 +31,15 @@ class Player(pygame.sprite.Sprite):
         # Setting up player sprite indexes
         self.CurSprite = 0
         self.image = self.RunSprites[self.CurSprite]
-        self.image = pygame.transform.scale(self.image, (50, 50))
+        self.image = pygame.transform.scale(self.image, (500, 500))
         self.rect = self.image.get_rect()
         self.rect.center = (300, 100)
 
-   
+        # Variables
+        self.pos = vec((10, 385))
+        self.vel = vec(0, 0)
+        self.acc = vec(0, 0)
+        (WIDTH, HEIGHT) = self.image.get_size()
 
 
     def move(self):
@@ -64,12 +64,15 @@ class Player(pygame.sprite.Sprite):
         if self.pos.y < 0:
             self.pos.y = 0
 
-        self.CurSprite +=0.1
-        if self.CurSprite   >= len(self.RunSprites):
-            self.CurSprite = 0
+        
         # self.rect.midbottom = self.pos
     def draw(self, screen):
+        self.CurSprite +=0.15
+        if self.CurSprite   >= len(self.RunSprites):
+            self.CurSprite = 0
         # pygame.draw.rect(screen, pygame.Rect(self.pos[0], self.pos[1], self.WIDTH, self.HEIGHT))
+        
+        self.image = self.RunSprites[int(self.CurSprite)]
         screen.blit(self.image, self.pos)
 
     def incrementScore(self):
