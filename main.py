@@ -78,8 +78,7 @@ while run:
     screen.blit(score_text, (10, 10))  # Adjust the position as needed
 
     # Drawing player
-    pygame.draw.rect(screen, colour, pygame.Rect(p1.pos[0], p1.pos[1], p1.WIDTH, p1.HEIGHT))
-    
+    p1.draw(screen)
     # Update Display
     
     # After each tick increment score
