@@ -34,7 +34,7 @@ while run:
         if event.type == pygame.QUIT: 
             run = False
     p1.move()
-    pygame.draw.rect(screen, colour, pygame.Rect(p1.pos[0], p1.pos[1], 5, 10))
+    pygame.draw.rect(screen, colour, pygame.Rect(p1.pos[0], p1.pos[1], p1.WIDTH, p1.HEIGHT))
     
     pygame.display.update()
     FramePerSec.tick(FPS)
