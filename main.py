@@ -55,7 +55,7 @@ while run:
         screen.blit(bg,(i*bg_width + scroll,0))
 
     #scroll background
-    scroll -=5
+    scroll -=2
 
     #reset Scroll
     if abs(scroll) > bg_width: 
