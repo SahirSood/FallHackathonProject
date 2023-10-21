@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):
         self.acc = vec(0,0)
 
     def move(self):
-        self.acc = vec(0,0.5) 
+        self.acc = vec(0,0) 
         pressed_keys = pygame.key.get_pressed()            
         if pressed_keys[K_LEFT]:
             self.acc.x = -(ACC)

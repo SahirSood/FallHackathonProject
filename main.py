@@ -1,7 +1,14 @@
 import pygame
+import os
+import math
 from pygame.locals import *
 import player
 pygame.init()
+
+#Setting up frames and clock varaibles
+clock = pygame.time.Clock()
+FPS = 60
+
 
 # Setting screen size
 SCREEN_WIDTH = 800
@@ -25,12 +32,39 @@ y = 50
 p1 = player.Player()
 
 # Drawing a rectangle
-pygame.draw.rect(screen, colour, pygame.Rect(30, 30, 60, 60))
+pygame.draw.rect(screen, colour, pygame.Rect(30, 30, 30, 30))
+
+#load Image
+bg = pygame.image.load(os.path.join('Background Images', 'city 4', '9.png'))
+bg = pygame.transform.scale(bg, (SCREEN_HEIGHT,SCREEN_WIDTH))
+bg_width = bg.get_width()
+
+
+#define game variables
+scroll = 0
+titles =  math.ceil(SCREEN_WIDTH / bg_width) + 1
+
 
 
 
 run = True
 while run:
+
+    clock.tick(FPS)
+    #draw scolling background
+    for i in range(0,titles):
+        screen.blit(bg,(i*bg_width + scroll,0))
+
+    #scroll background
+    scroll -=2
+
+    #reset Scroll
+    if abs(scroll) > bg_width: 
+        scroll = 0
+
+
+
+    #Event Handler
     for event in pygame.event.get():
         if event.type == pygame.QUIT: 
             run = False
@@ -43,7 +77,7 @@ while run:
     pygame.display.update()
     FramePerSec.tick(FPS)
     frameCount += 1
-    if frameCount == 60:
+    if frameCount == 5:
         p1.incrementScore()
         frameCount = 0
     screen.fill((0, 0, 0)) #clear screen
