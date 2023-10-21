@@ -15,6 +15,7 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = int(SCREEN_WIDTH * 0.5)
 vec = pygame.math.Vector2
 FPS = 60
+frameCount = 0
 
 # Creating a screen with a grey background
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -72,6 +73,10 @@ while run:
     
     pygame.display.update()
     FramePerSec.tick(FPS)
+    frameCount += 1
+    if frameCount == 60:
+        p1.incrementScore()
+        frameCount = 0
     screen.fill((0, 0, 0)) #clear screen
 
 pygame.quit()
