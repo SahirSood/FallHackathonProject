@@ -74,7 +74,7 @@ while run:
     pygame.display.update()
     FramePerSec.tick(FPS)
     frameCount += 1
-    if frameCount == 60:
+    if frameCount == 5:
         p1.incrementScore()
         frameCount = 0
     screen.fill((0, 0, 0)) #clear screen
