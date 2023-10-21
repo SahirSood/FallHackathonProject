@@ -27,7 +27,6 @@ class Player(pygame.sprite.Sprite):
         self.RunSprites.append(pygame.image.load(os.path.join('RUN', 'f4.png')))
         self.RunSprites.append(pygame.image.load(os.path.join('RUN', 'f5.png')))
         self.RunSprites.append(pygame.image.load(os.path.join('RUN', 'f6.png')))
-
         # Setting up player sprite indexes
         self.CurSprite = 0
         self.image = self.RunSprites[self.CurSprite]
@@ -39,15 +38,15 @@ class Player(pygame.sprite.Sprite):
         self.pos = vec((10, 385))
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
-        (WIDTH, HEIGHT) = self.image.get_size()
+        #(self.WIDTH, self.HEIGHT) = self.image.get_size()
 
 
     def move(self):
         self.acc = vec(0,0.5) 
         pressed_keys = pygame.key.get_pressed()            
-        if pressed_keys[K_LEFT]:
+        if pressed_keys[K_LEFT] or pressed_keys[pygame.K_a]:
             self.acc.x = -(ACC)
-        if pressed_keys[K_RIGHT]:
+        if pressed_keys[K_RIGHT] or pressed_keys[pygame.K_d]:
             self.acc.x = ACC
 
         self.acc.x += self.vel.x * FRIC
@@ -73,7 +72,8 @@ class Player(pygame.sprite.Sprite):
         # pygame.draw.rect(screen, pygame.Rect(self.pos[0], self.pos[1], self.WIDTH, self.HEIGHT))
         
         self.image = self.RunSprites[int(self.CurSprite)]
-        screen.blit(self.image, self.pos)
+        self.image = pygame.transform.scale(self.image, (100, 100))
+        screen.blit(self.image, (self.pos.x - 2 * self.HEIGHT, self.pos.y - 2 * self.HEIGHT))
 
     def incrementScore(self):
         self.SCORE += 1        

@@ -78,7 +78,7 @@ while run:
         if event.type == pygame.QUIT: 
             run = False
         if event.type == pygame.KEYDOWN:    
-            if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
+            if event.key == pygame.K_SPACE or event.key == pygame.K_UP or event.key == pygame.K_w:
                 p1.jump()
     p1.move()
 
