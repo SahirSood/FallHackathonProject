@@ -34,6 +34,9 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: 
             run = False
+        if event.type == pygame.KEYDOWN:    
+            if event.key == pygame.K_SPACE:
+                p1.jump()
     p1.move()
     pygame.draw.rect(screen, colour, pygame.Rect(p1.pos[0], p1.pos[1], p1.WIDTH, p1.HEIGHT))
     

@@ -7,7 +7,7 @@ vec = pygame.math.Vector2
 ACC = 0.5
 FRIC = -0.12
 FPS = 60
-
+gravity = 0.1
 
 
 class Player(pygame.sprite.Sprite):
@@ -30,19 +30,18 @@ class Player(pygame.sprite.Sprite):
         if pressed_keys[K_LEFT]:
             self.acc.x = -(ACC)
         if pressed_keys[K_RIGHT]:
-            self.acc.x = ACC  
-        if pressed_keys[K_UP]:
-            self.acc.y = -0.5
+            self.acc.x = ACC
 
         self.acc.x += self.vel.x * FRIC
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
+        
 
         if self.pos.x > SCREEN_WIDTH - self.WIDTH:
             self.pos.x = SCREEN_WIDTH - self.WIDTH
         if self.pos.x < 0:
             self.pos.x = 0
-        if self.pos.y < SCREEN_HEIGHT - self.HEIGHT:
+        if self.pos.y > SCREEN_HEIGHT - self.HEIGHT:
             self.pos.y = SCREEN_HEIGHT - self.HEIGHT
         if self.pos.y < 0:
             self.pos.y = 0
@@ -51,3 +50,7 @@ class Player(pygame.sprite.Sprite):
 
     def incrementScore(self):
         self.SCORE += 1
+
+    def jump(self):
+        if self.pos.y >= SCREEN_HEIGHT - self.HEIGHT:
+            self.vel.y = -15
