@@ -3,6 +3,7 @@ import os
 import math
 from pygame.locals import *
 import player
+import obstacles
 pygame.init()
 
 #Setting up frames and clock varaibles
@@ -16,6 +17,7 @@ SCREEN_HEIGHT = int(SCREEN_WIDTH * 0.5)
 vec = pygame.math.Vector2
 FPS = 60
 frameCount = 0
+obstacleCooldown = 0
 
 # Creating a screen with a grey background
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -30,6 +32,10 @@ FramePerSec = pygame.time.Clock()
 x = 100
 y = 50
 p1 = player.Player()
+
+# TEMPORARY: create obstacle
+obsList = []
+obsList.append(obstacles.Obstacles())
 
 # Drawing a rectangle
 pygame.draw.rect(screen, colour, pygame.Rect(30, 30, 30, 30))
@@ -73,13 +79,28 @@ while run:
                 p1.jump()
     p1.move()
     pygame.draw.rect(screen, colour, pygame.Rect(p1.pos[0], p1.pos[1], p1.WIDTH, p1.HEIGHT))
+    for obs in obsList:
+        obs.move()
+        pygame.draw.rect(screen, (200, 0, 0), pygame.Rect(obs.pos[0], obs.pos[1], obs.WIDTH, obs.HEIGHT))   
+        if obs.collide(p1):
+            pygame.quit()
     
     pygame.display.update()
     FramePerSec.tick(FPS)
     frameCount += 1
-    if frameCount == 5:
+    if frameCount >= 60:
         p1.incrementScore()
         frameCount = 0
+
+    obstacleCooldown += 1
+    if obstacleCooldown >= 90:
+        obstacleCooldown = 0
+        newObs = obstacles.Obstacles()
+        obsList.append(newObs)
+    if len(obsList) > 1:
+        if obsList[0].pos.x < 0:
+            del obsList[0]
+    
     screen.fill((0, 0, 0)) #clear screen
 
 pygame.quit()

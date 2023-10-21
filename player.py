@@ -14,6 +14,7 @@ class Player(pygame.sprite.Sprite):
     WIDTH = 20
     HEIGHT = 20
     SCORE = 0
+    jumpHeight = -12
     def __init__(self):
         super().__init__()
         self.surf = pygame.Surface((30, 30))
@@ -25,7 +26,7 @@ class Player(pygame.sprite.Sprite):
         self.acc = vec(0,0)
 
     def move(self):
-        self.acc = vec(0,0) 
+        self.acc = vec(0,0.5) 
         pressed_keys = pygame.key.get_pressed()            
         if pressed_keys[K_LEFT]:
             self.acc.x = -(ACC)
@@ -49,8 +50,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.midbottom = self.pos
 
     def incrementScore(self):
-        self.SCORE += 1
+        self.SCORE += 1        
 
     def jump(self):
-        if self.pos.y >= SCREEN_HEIGHT - self.HEIGHT:
-            self.vel.y = -15
+        self.vel.y = self.jumpHeight
+            
