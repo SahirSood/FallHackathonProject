@@ -78,4 +78,5 @@ class Player(pygame.sprite.Sprite):
         self.SCORE += 1        
 
     def jump(self):
-        self.vel.y = self.jumpHeight
+        if self.pos.y >= SCREEN_HEIGHT - self.HEIGHT - 5:
+            self.vel.y = self.jumpHeight
