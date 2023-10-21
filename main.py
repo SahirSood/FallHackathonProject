@@ -55,7 +55,7 @@ quit_button = button.Button(336, 185, quit_image, 1)
 
 # TEMPORARY: create obstacle
 obsList = []
-obsList.append(obstacles.Obstacles())
+obsList.append(obstacles.Obstacles(False))
 
 # Drawing a rectangle
 pygame.draw.rect(screen, colour, pygame.Rect(30, 30, 30, 30))
@@ -135,7 +135,10 @@ while run:
     obstacleCooldown += 1
     if obstacleCooldown >= 90:
         obstacleCooldown = 0
-        newObs = obstacles.Obstacles()
+        if p1.SCORE % 4 == 0:
+            newObs = obstacles.Obstacles(True)
+        else:
+            newObs = obstacles.Obstacles(False)
         obsList.append(newObs)
     if len(obsList) > 1:
         if obsList[0].pos.x < 0:

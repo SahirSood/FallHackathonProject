@@ -7,12 +7,14 @@ vec = pygame.math.Vector2
 
 class Obstacles(pygame.sprite.Sprite):
     
-    
-    def __init__(self):
+    def __init__(self, floating):
         super().__init__() 
         self.HEIGHT = random.randint(5, 80)
         self.WIDTH = random.randint(5, 10)
-        self.pos = vec(player.SCREEN_WIDTH, player.SCREEN_HEIGHT - self.HEIGHT)       
+        if floating:
+            self.pos = vec(player.SCREEN_WIDTH, random.randint(5, player.SCREEN_HEIGHT - self.HEIGHT)) 
+        else:
+            self.pos = vec(player.SCREEN_WIDTH, player.SCREEN_HEIGHT - self.HEIGHT) 
 
     def move(self):
         self.pos -= vec(2, 0)
