@@ -25,6 +25,7 @@ screen.fill((192, 192, 192))
 
 # game variables
 game_paused = False
+game_over = False
 
 # define fonts and font colour
 font = pygame.font.SysFont("lucidaconsole", 40)
@@ -74,87 +75,70 @@ myfont = pygame.font.SysFont("Comic Sans", 24)  # Increase font size for better 
 score_font = pygame.font.SysFont("Comic Sans", 24)
 randNumLabel = myfont.render("Score:", 1, (0, 0, 0))
 
+def pause_game():
+    global game_paused
+    game_paused = True
+
 # initializing game loop
 run = True
 while run:
 
     clock.tick(FPS)
-    #draw scolling background
-    for i in range(0,titles):
-        screen.blit(bg,(i*bg_width + scroll,0))
-
-    #scroll background
-    scroll -=2
-
-    #reset Scroll
-    if abs(scroll) > bg_width: 
-        scroll = 0
-
-    # check if the game is paused 
-    if game_paused == True:
-        if resume_button.draw(screen):
-            game_paused = False
-        if quit_button.draw(screen):
-            run = False   
 
     #Event Handler
     for event in pygame.event.get():
         # pausing the game
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_EQUALS:
+            if event.key == pygame.K_ESCAPE:
                 game_paused = True
-      
+    
+    if not game_paused: 
+        #draw scolling background
+        for i in range(0,titles):
+            screen.blit(bg,(i*bg_width + scroll,0))
+
+        #scroll background
+        scroll -=2
+
+        #reset Scroll
+        if abs(scroll) > bg_width: 
+            scroll = 0
+
         if event.type == pygame.QUIT: 
             run = False
         if event.type == pygame.KEYDOWN:    
             if event.key == pygame.K_SPACE or event.key == pygame.K_UP or event.key == pygame.K_w:
                 p1.jump()
-    p1.move()
+        p1.move()
 
-    #Updating score on screen
-    score_text = score_font.render(f"Score: {p1.SCORE}", True, (255, 255, 255))  # You can change the color
-    screen.blit(score_text, (10, 10))  # Adjust the position as needed
+        #Updating score on screen
+        score_text = score_font.render(f"Score: {p1.SCORE}", True, (255, 255, 255))  # You can change the color
+        screen.blit(score_text, (10, 10))  # Adjust the position as needed
 
-    # Drawing player
-    p1.draw(screen)
-    # Update Display
-    for obs in obsList:
-        obs.move()
-        obs.draw(screen)
-        #pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(obs.pos[0], obs.pos[1], obs.WIDTH, obs.HEIGHT))   
-        if obs.collide(p1):
-            #print("hit")
-            pygame.quit() #to-do: game over screen
-    
-    # After each tick increment score
-    pygame.display.update()
-    FramePerSec.tick(FPS)
-    frameCount += 1
-    if frameCount >= 60:
-        p1.incrementScore()
-        frameCount = 0
-
-    obstacleCooldown += 1
-    if obstacleCooldown >= 90:
-        obstacleCooldown = 0
-        if p1.SCORE % 4 == 0:
-            newObs = obstacles.Obstacles(True)
-        else:
-            newStack = obstacles.beerStack()
-            for beer in newStack.stack:
-                newObs = beer  
-                obsList.append(newObs)          
+        # Drawing player
+        p1.draw(screen)
+        # Update Display
+        for obs in obsList:
+            obs.move()
+            obs.draw(screen)
+            #pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(obs.pos[0], obs.pos[1], obs.WIDTH, obs.HEIGHT))   
+            if obs.collide(p1):
+                game_over = True  # Player has lost the game
+                break  # Exit the loop
         
-    if len(obsList) > 1:
-        if obsList[0].pos.x < 0:
-            del obsList[0]
-    
-    screen.fill((0, 0, 0)) #clear screen
+        if game_over:
+            draw_text("Game Over", font, TEXT_COL, SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 - 40)
+            draw_text(f"Score: {p1.SCORE}", font, TEXT_COL, SCREEN_WIDTH // 2 - 80, SCREEN_HEIGHT // 2 + 20)
+            draw_text("Press 'R' to Restart", font, TEXT_COL, SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 80)
 
-pygame.quit()
+        # Check for restart input
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_r]:
+            # Reset the game
+            p1 = player.Player()
+            obsList = []
+            game_over = False
 
-<<<<<<< Updated upstream
-=======
         # After each tick increment score
         pygame.display.update()
         FramePerSec.tick(FPS)
@@ -186,4 +170,3 @@ pygame.quit()
             run = False
 
     pygame.display.update()
->>>>>>> Stashed changes
