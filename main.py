@@ -153,3 +153,37 @@ while run:
 
 pygame.quit()
 
+<<<<<<< Updated upstream
+=======
+        # After each tick increment score
+        pygame.display.update()
+        FramePerSec.tick(FPS)
+        frameCount += 1
+        if frameCount >= 60:
+            if game_over == False:
+                p1.incrementScore()
+            frameCount = 0
+
+        obstacleCooldown += 1
+        if obstacleCooldown >= 90:
+            obstacleCooldown = 0
+            if p1.SCORE % 4 == 0:
+                newObs = obstacles.Obstacles(True)
+            else:
+                newStack = obstacles.beerStack()
+                for beer in newStack.stack:
+                    newObs = beer  
+                    obsList.append(newObs)          
+            
+        if len(obsList) > 1:
+            if obsList[0].pos.x < 0:
+                del obsList[0]
+
+    else: 
+        if resume_button.draw(screen):
+            game_paused = False
+        if quit_button.draw(screen):
+            run = False
+
+    pygame.display.update()
+>>>>>>> Stashed changes
