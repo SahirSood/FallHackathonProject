@@ -5,6 +5,7 @@ from pygame.locals import *
 import button
 import player
 import obstacles
+import level
 
 # setting up frames and clock variables
 clock = pygame.time.Clock()
@@ -74,6 +75,8 @@ myfont = pygame.font.SysFont("Comic Sans", 24)  # Increase font size for better 
 score_font = pygame.font.SysFont("Comic Sans", 24)
 randNumLabel = myfont.render("Score:", 1, (0, 0, 0))
 
+# LevelObj = level.Level(64,32, SCREEN_WIDTH, SCREEN_HEIGHT)
+
 # initializing game loop
 run = True
 while run:
@@ -84,6 +87,8 @@ while run:
         screen.blit(bg,(i*bg_width + scroll,0))
 
     #scroll background
+    # LevelObj.load_level(screen)
+    # LevelObj.update(screen)
     scroll -=2
 
     #reset Scroll
