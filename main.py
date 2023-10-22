@@ -120,7 +120,8 @@ while run:
     # Update Display
     for obs in obsList:
         obs.move()
-        pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(obs.pos[0], obs.pos[1], obs.WIDTH, obs.HEIGHT))   
+        obs.draw(screen)
+        #pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(obs.pos[0], obs.pos[1], obs.WIDTH, obs.HEIGHT))   
         if obs.collide(p1):
             pygame.quit() #to-do: game over screen
     
