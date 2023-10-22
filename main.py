@@ -79,8 +79,8 @@ randNumLabel = myfont.render("Score:", 1, (0, 0, 0))
 
 # initializing game loop
 run = True
+win = False
 while run:
-
     clock.tick(FPS)
     #draw scolling background
     for i in range(0,titles):
@@ -133,8 +133,7 @@ while run:
         obs.draw(screen)
         #pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(obs.pos[0], obs.pos[1], obs.WIDTH, obs.HEIGHT))   
         if obs.collide(p1):
-            #print("hit")
-            pygame.quit() #to-do: game over screen
+            pygame.quit()
     
     # After each tick increment score
     pygame.display.update()
@@ -160,6 +159,9 @@ while run:
             del obsList[0]
     
     screen.fill((0, 0, 0)) #clear screen
+
+    if p1.SCORE > 4:
+        win = True
 
 pygame.quit()
 

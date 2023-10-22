@@ -41,12 +41,15 @@ class Obstacles(pygame.sprite.Sprite):
 class beerStack(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.height = random.randint(1, 4)
+        self.width = random.randint(1, 4)
         self.stack = []
-        for i in range(self.height):
-            beer = Obstacles(False)
-            beer.pos.y -= 20 * (i)
-            self.stack.append(beer)
+        for i in range(self.width):
+            self.height = random.randint(1, 4)
+            for j in range(self.height):
+                beer = Obstacles(False)
+                beer.pos.y -= 20 * (j)
+                beer.pos.x -= 20 * (i)
+                self.stack.append(beer)
 
     def draw(self, screen):
         for beer in self.stack:
