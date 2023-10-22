@@ -54,7 +54,7 @@ quit_image = pygame.image.load('quit.png').convert_alpha()
 resume_button = button.Button(304, 65, resume_image, 1)
 quit_button = button.Button(336, 185, quit_image, 1)
 
-# TEMPORARY: create obstacle
+# create initial obstacle
 obsList = []
 obsList.append(obstacles.Obstacles("stack"))
 
