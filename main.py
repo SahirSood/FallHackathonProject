@@ -56,7 +56,7 @@ quit_button = button.Button(336, 185, quit_image, 1)
 
 # TEMPORARY: create obstacle
 obsList = []
-obsList.append(obstacles.Obstacles())
+obsList.append(obstacles.Obstacles("stack"))
 
 # Drawing a rectangle
 pygame.draw.rect(screen, colour, pygame.Rect(30, 30, 30, 30))
@@ -107,7 +107,7 @@ while run:
         if event.type == pygame.QUIT: 
             run = False
         if event.type == pygame.KEYDOWN:    
-            if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
+            if event.key == pygame.K_SPACE or event.key == pygame.K_UP or event.key == pygame.K_w:
                 p1.jump()
         p1.move()
 
