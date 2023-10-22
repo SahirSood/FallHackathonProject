@@ -1,5 +1,6 @@
 from pygame.locals import *
 import pygame
+#from pygame.sprite import _Group
 import player
 import random
 import os
@@ -11,16 +12,16 @@ class Obstacles(pygame.sprite.Sprite):
     def __init__(self, floating):
         super().__init__() 
 
-        
-
-        self.HEIGHT = 80
-        self.WIDTH = 10
+        self.HEIGHT = 30
+        self.WIDTH = 30
         if floating:
             self.pos = vec(player.SCREEN_WIDTH, random.randint(5, player.SCREEN_HEIGHT - self.HEIGHT)) 
-            self.image = pygame.image.load(os.path.join('beer.png')) #change with wings
+            self.image = pygame.image.load(os.path.join('beer.png')) #change with wings image
         else:
             self.pos = vec(player.SCREEN_WIDTH, player.SCREEN_HEIGHT - self.HEIGHT) 
             self.image = pygame.image.load(os.path.join('beer.png'))
+
+        (self.imgW, self.imgH) = self.image.get_size()
 
     def move(self):
         self.pos -= vec(2, 0)
@@ -34,4 +35,19 @@ class Obstacles(pygame.sprite.Sprite):
     
     def draw(self, screen):
         self.image = pygame.transform.scale(self.image, (30, 30))
-        screen.blit(self.image, (self.pos.x - 2 * self.HEIGHT, self.pos.y - 2 * self.HEIGHT))
+        screen.blit(self.image, (self.pos.x, self.pos.y))
+        #pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.pos[0], self.pos[1], self.WIDTH, self.HEIGHT))
+
+class beerStack(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.height = random.randint(1, 4)
+        self.stack = []
+        for i in range(self.height):
+            beer = Obstacles(False)
+            beer.pos.y -= 20 * (i)
+            self.stack.append(beer)
+
+    def draw(self, screen):
+        for beer in self.stack:
+            beer.draw()

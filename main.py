@@ -55,7 +55,7 @@ quit_button = button.Button(336, 185, quit_image, 1)
 
 # TEMPORARY: create obstacle
 obsList = []
-obsList.append(obstacles.Obstacles(False))
+obsList.append(obstacles.Obstacles("stack"))
 
 # Drawing a rectangle
 pygame.draw.rect(screen, colour, pygame.Rect(30, 30, 30, 30))
@@ -123,6 +123,7 @@ while run:
         obs.draw(screen)
         #pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(obs.pos[0], obs.pos[1], obs.WIDTH, obs.HEIGHT))   
         if obs.collide(p1):
+            #print("hit")
             pygame.quit() #to-do: game over screen
     
     # After each tick increment score
@@ -139,8 +140,11 @@ while run:
         if p1.SCORE % 4 == 0:
             newObs = obstacles.Obstacles(True)
         else:
-            newObs = obstacles.Obstacles(False)
-        obsList.append(newObs)
+            newStack = obstacles.beerStack()
+            for beer in newStack.stack:
+                newObs = beer  
+                obsList.append(newObs)          
+        
     if len(obsList) > 1:
         if obsList[0].pos.x < 0:
             del obsList[0]
