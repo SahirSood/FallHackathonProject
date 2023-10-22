@@ -1,4 +1,5 @@
 # FallHackathonProject
+Welcome to Beating Alcoholism!
 This is our project for SFU's FallHacks 2023 under the theme "turning a new leaf".
 
 Participants:
