@@ -162,11 +162,11 @@ while run:
         if len(obsList) > 1:
             if obsList[0].pos.x < 0:
                 del obsList[0]
-        
-        screen.fill((0, 0, 0)) #clear screen
 
     else: 
         if resume_button.draw(screen):
             game_paused = False
         if quit_button.draw(screen):
             run = False
+
+    pygame.display.update()
