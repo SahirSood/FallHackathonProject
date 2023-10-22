@@ -5,6 +5,7 @@ from pygame.locals import *
 import button
 import player
 import obstacles
+import trap
 
 # setting up frames and clock variables
 clock = pygame.time.Clock()
@@ -44,6 +45,8 @@ FramePerSec = pygame.time.Clock()
 x = 100
 y = 50
 p1 = player.Player()
+
+spill = trap.Trap()
 
 # load button images 
 resume_image = pygame.image.load('resume.png').convert_alpha()
@@ -111,12 +114,19 @@ while run:
                 p1.jump()
     p1.move()
 
+    spill.move()
+    if spill.pos.x <= 0 - spill.WIDTH:
+        spill = trap.Trap()
+
     #Updating score on screen
     score_text = score_font.render(f"Score: {p1.SCORE}", True, (255, 255, 255))  # You can change the color
     screen.blit(score_text, (10, 10))  # Adjust the position as needed
 
     # Drawing player
     p1.draw(screen)
+    spill.draw(screen)
+
+    spill.collide(p1)
     # Update Display
     for obs in obsList:
         obs.move()
