@@ -109,24 +109,46 @@ while run:
         if event.type == pygame.KEYDOWN:    
             if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
                 p1.jump()
-    frameCount += 1
-    if frameCount >= 60:
-        p1.incrementScore()
-        frameCount = 0
+        p1.move()
 
-    obstacleCooldown += 1
-    if obstacleCooldown >= 90:
-        obstacleCooldown = 0
-        newObs = obstacles.Obstacles()
-        obsList.append(newObs)
-    if len(obsList) > 1:
-        if obsList[0].pos.x < 0:
-            del obsList[0]
-    
-    screen.fill((0, 0, 0)) #clear screen
+        #Updating score on screen
+        score_text = score_font.render(f"Score: {p1.SCORE}", True, (255, 255, 255))  # You can change the color
+        screen.blit(score_text, (10, 10))  # Adjust the position as needed
 
-pygame.quit()
+        # Drawing player
+        p1.draw(screen)
+        # Update Display
+        for obs in obsList:
+            obs.move()
+            obs.draw(screen)
+            #pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(obs.pos[0], obs.pos[1], obs.WIDTH, obs.HEIGHT))   
+            if obs.collide(p1):
+                game_over = True  # Player has lost the game
+                break  # Exit the loop
+        
+        if game_over:
+            draw_text("Game Over", font, TEXT_COL, SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 - 40)
+            draw_text(f"Score: {p1.SCORE}", font, TEXT_COL, SCREEN_WIDTH // 2 - 80, SCREEN_HEIGHT // 2 + 20)
+            draw_text("Press 'R' to Restart", font, TEXT_COL, SCREEN_WIDTH // 2 - 200, SCREEN_HEIGHT // 2 + 80)
 
+        # Check for restart input
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_r]:
+            # Reset the game
+            p1 = player.Player()
+            obsList = []
+            game_over = False
+
+        # After each tick increment score
+        pygame.display.update()
+        FramePerSec.tick(FPS)
+        frameCount += 1
+        if frameCount >= 60:
+            if game_over == False:
+                p1.incrementScore()
+            frameCount = 0
+
+        obstacleCooldown += 1
         if obstacleCooldown >= 90:
             obstacleCooldown = 0
             if p1.SCORE % 4 == 0:
