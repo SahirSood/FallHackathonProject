@@ -2,6 +2,7 @@ from pygame.locals import *
 import pygame
 import player
 import random
+import os
 
 vec = pygame.math.Vector2
 
@@ -9,8 +10,11 @@ class Obstacles(pygame.sprite.Sprite):
     
     def __init__(self, floating):
         super().__init__() 
-        self.HEIGHT = random.randint(5, 80)
-        self.WIDTH = random.randint(5, 10)
+
+        
+
+        self.HEIGHT = 80
+        self.WIDTH = 10
         if floating:
             self.pos = vec(player.SCREEN_WIDTH, random.randint(5, player.SCREEN_HEIGHT - self.HEIGHT)) 
         else:
